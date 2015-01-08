@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+
+{% load staticfiles %}
+{% block title %} Login - IPOPT {% endblock %}
+
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static "css/signin.css" %}">
+{% endblock %}
+
+{% block container %}
+
+<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+	<div class="container">
+		<div class="navbar-header" style="margin-left:43%;">
+			<a class="navbar-brand" href="{% url 'home'%}">CMU IPOPT Online System</a>
+		</div>
+	</div>
+</div>
+
+{% if form.errors %}
+<p class="text-center text-danger">Your username and password didn't match. Please try again.</p>
+{% endif %}
+<form class="form-signin" role="form" method="post" action="{% url 'django.contrib.auth.views.login' %}">
+	{% csrf_token %}
+	<h2 class="form-signin-heading">Please sign in</h2>
+	<label for="id_username" class="sr-only">Username</label>
+	<input type="text" id="id_username" name="username" class="form-control" placeholder="Username" required="" autofocus="">
+	<label for="id_password" class="sr-only">Password</label>
+	<input type="password" id="id_password" name="password" class="form-control" placeholder="Password" required="">
+	<div class="checkbox">
+		<label>
+			<input type="checkbox" value="remember-me"> Remember me
+		</label>
+	</div>
+	<input type="hidden" name="next" value="{{ next }}" />
+	<button class="btn btn-primary btn-block" type="submit" style="font-size:16px;">Sign in</button>
+</form>
+
+<p class="text-muted text-center">Do not have an account? Click <a href="{% url 'register' %}">here</a> to create your account.</p>
+
+{% endblock %}

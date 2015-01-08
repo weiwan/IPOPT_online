@@ -1,0 +1,63 @@
+{% extends 'base.html' %}
+
+
+{% block container %}
+<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+{% endblock %}
+
+{% block js %}
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="http://code.highcharts.com/modules/data.js"></script>
+<script src="http://code.highcharts.com/modules/exporting.js"></script>
+
+<!-- Additional files for the Highslide popup effect -->
+<script type="text/javascript" src="http://www.highcharts.com/media/com_demo/highslide-full.min.js"></script>
+<script type="text/javascript" src="http://www.highcharts.com/media/com_demo/highslide.config.js" charset="utf-8"></script>
+<link rel="stylesheet" type="text/css" href="http://www.highcharts.com/media/com_demo/highslide.css" />
+
+<script type="text/javascript">
+$(document).ready(function() {
+	// Get the CSV and create the chart
+	$.getJSON('{% url "data_stackbar" %}', function (data) {
+		$('#container').highcharts({
+			chart: {
+				type: 'column'
+			},
+			title: {
+				text: 'The freedom of the model'
+			},
+			xAxis: {
+				categories: data.title,
+				title: {
+					text: 'Recent submissions'
+				}
+			},
+			yAxis: {
+				min: 0,
+				title: {
+					text: '# Variables'
+				}
+			},
+			tooltip: {
+				pointFormat: '<span style="color:{series.color}">{series.name}</span>: <b>{point.y}</b> ({point.percentage:.0f}%)<br/>',
+				shared: true
+			},
+			plotOptions: {
+				column: {
+					stacking: 'percent'
+				}
+			},
+			series: [{
+				name: '# of freedom',
+				data: data.mineq,
+			},
+			{
+				name: '# of equality constraints',
+				data: data.meq, 
+			}]
+		});
+	});
+
+});
+</script>
+{% endblock %}

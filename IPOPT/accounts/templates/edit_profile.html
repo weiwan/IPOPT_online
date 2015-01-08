@@ -1,0 +1,90 @@
+{% extends 'base.html' %}
+    {% block title %}IPOPT: View Profile{% endblock %}
+
+	<!--Body Starts Here-->
+	{% block container %}
+		<div class="panel panel-default">
+      <div class="panel-heading">Edit Profile {{profile.user.username}}</div>
+      <!--Form Starts here-->
+      <div class="panel-body">
+        <form class="form-horizontal" role="form" method = 'post' action = "{% url 'accounts.views.edit_profile' %}"
+            enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
+                <label for="firstName" class="col-md-3 control-label">First Name: </label>
+                  <div class="col-md-6">
+                    <input type="text" class="form-control" id="first_name" name = 'first_name' value="{{ profile.first_name }}">
+                  </div>
+                </div>
+                <div class="form-group">
+                <label for="lastName" class="col-md-3 control-label">Last Name: </label>
+                  <div class="col-md-6">
+                    <input type="text" class="form-control" id="last_name" name = 'last_name' value="{{ profile.last_name }}">
+                  </div>
+                </div>
+                <div class="form-group">
+                <label for="age" class="col-md-3 control-label">Age: </label>
+                  <div class="col-md-6">
+                    <input type="text" class="form-control" id="age" name="age" value="{{ profile.age }}">
+                  </div>
+                </div>
+                <div class="form-group ">
+                <label for="gender" class="col-md-3 control-label">Gender: </label>
+                  <div class="col-md-6">
+                    <select class="form-control" id="gender" value="{{ profile.gender }}" name = 'gender'>
+                    <option value="Male">Male</option>
+                    <option value="Female">Female</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="form-group">
+                <label for="location" class="col-md-3 control-label">Location: </label>
+                  <div class="col-md-6">
+                    <input type="text" class="form-control" id="location" value= "{{ profile.location }}" name = 'location'>
+                  </div>
+                </div>
+                <div class="form-group">
+                <label for="Occupation" class="col-md-3 control-label">What do you do ? : </label>
+                  <div class="col-md-6">
+                    <input type="text" class="form-control" id="occupation" value= "{{ profile.occupation }}" name = 'occupation'>
+                  </div>
+                </div>
+                <div class="form-group">
+                <label for="work" class="col-md-3 control-label">Where do you work ? : </label>
+                  <div class="col-md-6">
+                    <input type="text" class="form-control" id="company" value="{{ profile.company }}" name='company'>
+                  </div>
+                </div>
+                <div class="form-group">
+                <label for="about" class="col-md-3 control-label">Tell us something about yourself :  <p class="help-block">Maximum length is 300 characters.</p></label>
+                  <div class="col-md-6">
+                    <textarea class="form-control" rows="4" id="about" name ='about' value="{{profile.about}}">{{profile.about}}</textarea>
+                  </div>
+                </div>
+                <div class="form-group">
+                <div class="col-md-offset-8 col-md-4">
+                  <button type="submit" class="btn btn-primary">Make Changes</button>
+                  <br>
+                  <p class="text-success"> {{ saved_message }} </p>
+                </div>
+
+                </div>
+            </div>
+            <!-- <div class = "col-md-3 well">
+              <b>Photo:</b>
+              <br></br>
+              <img alt='IPOPPT Image Watermark' src={{profile.picture}} class="img-thumbnail" ></img>
+              <br></br>
+              <input type="file" name="picture" value="{{profile.picture}}">
+              <p class="help-block">Only jpg or gif images allowed with max size limit of 300kb.</p>
+            </div> -->
+           </div>
+        </form>
+      </div>
+      <!--Form ends here-->
+    </div>
+    {% endblock %}
+  </body>
+</html>

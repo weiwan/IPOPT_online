@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% load gravatar %}
+
+{% block title %} Submission - IPOPT {% endblock %}
+{% block isResultActive %}class="active"{% endblock %}
+
+{% block css %}
+<link href="{% static "css/sweet-alert.css" %}" rel="stylesheet">
+{% endblock %}
+{% block container %}
+<br>
+<div class="col-md-9" style="min-height:480px;" id="mainbar">
+	<h3>Title: {{title}}</h3>
+	<pre class="pre" id="editor" style='min-height:480px;font-family: Consolas, "Liberation Mono", Menlo, Courier, monospace;
+font-size: 14px;
+line-height: 18px;'>{% if submission %}{{submission}}{% endif %}</pre>
+<div class="row" id="comment_box" style="display:none;">
+	<div class="col-md-12">
+        <form id="resubmit_form" action="{% url 'submission' %}" method = "POST" enctype="multipart/form-data">
+			<div class="col-md-1">
+			<img src="{% gravatar_url user.email 50 %}" class="img-rounded">
+			</div>
+          {% csrf_token %}
+        	<div class="col-md-11">
+        		<h3 style="margin-top:0;">Leave Comment</h3>
+        		<input name="title" type="hidden" value="{{title}} resubmit">
+	          	<input class="form-control" name="comments" type="text" placeholder="Resubmission">
+	          	<br>
+	          	<input id="modelcode" name="modelcode" type="hidden">
+	          	<input name="option" type="hidden" value="{{option}}">
+	          	<input name="email" type="hidden" value="{{user.email}}">
+	          	<button class="btn btn-success pull-right" id="resubmit_button">Resubmit</button>
+				<button class="btn btn-danger pull-right" id="discard_button">Discard</button>
+        	</div>
+          	
+        </form>		
+	</div>
+</div>
+</div>
+<div class="col-md-3" id="sidebar">
+	<div  class="row" style="position:absolute;">
+	{% if editable %}
+	<button class="btn btn-primary" id="edit_button">Edit</button>
+	{% endif %}
+	</div>
+</div>
+
+{% endblock %}
+
+{% block js %}
+<script type="text/javascript" src="http://cdnjs.cloudflare.com/ajax/libs/ace/1.1.3/ace.js"></script>
+<script>
+$(document).ready(function(){
+	var editor;
+	$("#edit_button").click(function(){
+		$(this).hide();
+		$("#sidebar").hide();
+		$("#mainbar").removeClass("col-md-9").addClass("col-md-12");
+		$("#comment_box").fadeIn();
+		editor = ace.edit("editor");
+		editor.setTheme("ace/theme/github");
+
+		editor.getSession().setMode("ace/mode/text");
+	});
+
+	$("#resubmit_button").click(function(e){
+		e.preventDefault();
+		$("#modelcode").val(editor.getSession().getValue());
+		$("#resubmit_form").submit();
+	});
+
+	$("#discard_button").click(function(e){
+		e.preventDefault();
+		document.location.reload(true);
+	});
+});
+</script>
+{% endblock %}
+

@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+
+
+{% block container %}
+<div id="container" style="min-width: 310px; height: 400px; margin: 0 auto"></div>
+{% endblock %}
+
+{% block js %}
+<script src="http://code.highcharts.com/highcharts.js"></script>
+<script src="http://code.highcharts.com/modules/data.js"></script>
+<script src="http://code.highcharts.com/modules/exporting.js"></script>
+
+<!-- Additional files for the Highslide popup effect -->
+<script type="text/javascript" src="http://www.highcharts.com/media/com_demo/highslide-full.min.js"></script>
+<script type="text/javascript" src="http://www.highcharts.com/media/com_demo/highslide.config.js" charset="utf-8"></script>
+<link rel="stylesheet" type="text/css" href="http://www.highcharts.com/media/com_demo/highslide.css" />
+
+<script type="text/javascript">
+$(document).ready(function() {
+    // Get the CSV and create the chart
+    $.getJSON('{% url "data_loglog" %}', function (csv) {
+    	console.log(csv.data);
+	    $('#container').highcharts({
+	        chart: {
+	            type: 'scatter',
+	            zoomType: 'xy'
+	        },
+	        title: {
+	            text: 'Models size log-log plot'
+	        },
+	        xAxis: {
+	            title: {
+	                enabled: true,
+	                text: '# variables'
+	            },
+	            startOnTick: true,
+	            endOnTick: true,
+	            showLastLabel: true,
+	            type: 'logarithmic',
+	        },
+	        yAxis: {
+	            title: {
+	                text: '# constraints'
+	            },
+	            type: 'logarithmic',
+	        },
+	        series: [{
+	        	data: csv.data
+	        }]
+
+		});
+	});
+
+});
+</script>
+{% endblock %}

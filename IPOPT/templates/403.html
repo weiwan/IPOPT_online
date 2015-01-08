@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% load staticfiles %}
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static "css/error.css" %}">
+{% endblock %}
+
+{% block container %}
+<div class="row" style="margin-top:10%;">
+	<div class="col-md-4 col-md-offset-2">
+		<img src="{% static "images/face2.jpg" %}">
+	</div>
+	<div class="col-md-4">
+		<h1>403</h1>
+		<p><b>Hey</b>, you don't have permission to view this page</p>
+	</div>
+</div>
+{% endblock %}

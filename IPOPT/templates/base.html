@@ -1,0 +1,97 @@
+{% load gravatar %}
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <title>{% block title %}IPOPT{% endblock %}</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    {% load staticfiles %}
+    <link href="{% static "css/base.css" %}" rel="stylesheet">
+    <link href="{% static "css/bootstrap.css" %}" rel="stylesheet">
+    <link href="{% static "css/docs.min.css" %}" rel="stylesheet">
+    {# <link href="{% static "css/bootstrap-min.css" %}" rel="stylesheet"> #}
+    <script src="{% static "js/ie-emulation-modes-warning.js" %}"></script>
+    {% block css %}
+    {% endblock %}
+  </head>
+  <body>
+  <!--Navigation Menu Starts here-->
+  <nav class="navbar navbar-default navbar-fixed-top" role="navigation">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="{% url 'home' %}">IPOPT Online System</a>
+        </div>
+        <div id="navbar" class="navbar-collapse collapse">
+          <ul class="nav navbar-nav">
+            <li {% block isHomeActive %}{% endblock %}><a href="{% url 'submission' %}">Submit</a></li>
+            <li {% block isResultActive %}{% endblock %}><a href="{% url 'result' %}">Submissions</a></li>
+            <li {% block isDiscussActive %}{% endblock %}><a href="{% url 'discuss' %}">Discuss</a></li>
+            <li {% block isAnalysisActive %}{% endblock %}><a href="{% url 'analysis' %}">Analysis</a></li>
+          </ul>
+          {% if user.is_authenticated %}
+          <ul id="navBar-right" class="nav navbar-nav navbar-right">
+            <li><a href="{% url 'notification_list' %}">
+            <img src="{% static "images/notification.jpg" %}">
+            </a></li>
+            <li class="dropdown">
+            <a href="#" class="dropdown-toggle" style="margin-bottom:-5px" data-toggle="dropdown">
+
+              <img src="{% gravatar_url user.email 25 %}" class="img-rounded" alt="Profile" />&nbsp;&nbsp;{{user.username}}
+            </a>
+            <ul class="dropdown-menu">
+              <li><a href="{% url 'analysis' %}">Dashboard</a></li>
+
+              <li><a href="{% url 'my_discuss' %}">My Discuss</a></li>
+
+              <li><a href="{% url 'view_profile' %}">Profile</a></li>
+
+              <!-- TODO:  Dashboard  -->
+              <li><a href="{% url 'change_password' %}">Change Password</a></li>
+              <li class="divider"></li>
+              <li><a href="{% url 'logout' %}">Sign out</a></li>
+            </ul>
+            </li>
+          </ul>
+          {% else %}
+          <ul id="navBar-right" class="nav navbar-nav navbar-right">
+          <li>
+            <a href="{% url 'login' %}">Login</a>
+          </li>
+          <li>
+            <a href="{% url 'register' %}">Register</a>
+          </li>
+          </ul>
+          {% endif %}
+
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+  <!--Navigation Menu Ends here-->
+
+  <!--Real Body Starts Here-->
+  <div class="container">
+  {% block container %}
+
+  {% endblock %}
+  </div>
+  <!--Body Ends Here-->
+
+  <!-- Placed at the end of the document so the pages load faster -->
+  {% block javascript %}
+  <script src="{% static "js/jquery.min.js" %}"></script>
+  <script src="{% static "js/bootstrap.min.js" %}"></script>
+  <!-- IE10 viewport hack for Surface/desktop Windows 8 bug -->
+  <script src="{% static "js/ie10-viewport-bug-workaround.js" %}"></script>
+  {% endblock %}
+  {% block js %}
+  {% endblock %}
+  </body>
+</html>

@@ -1,0 +1,80 @@
+{% extends 'base.html' %}
+    {% block title %} Submissions - IPOPT {% endblock %}
+    {% block isHomeActive %}class="active"{% endblock %}
+    {% block css %}
+    {% endblock %}
+    {% block container %}
+      <!-- Main component for a primary marketing message or call to action -->
+      <div class="jumbotron">
+        <h1>Submission page</h1>
+        <p>This part should contain the instructions to show users how to use our system. And also what kinds of file/code a user should upload to our system.</p>
+        <p>A link to some help document would be great here!</p>
+        <p>
+          <a class="btn btn-lg btn-primary" href="#" role="button">View help docs</a>
+        </p>
+      </div>
+
+      <div class="row">
+        <form action="{% url 'submission' %}" method = "POST" enctype="multipart/form-data">
+          {% csrf_token %}
+          <div class="col-md-12">
+            <div class="row">
+              <div class="col-md-4">
+                <p>Enter the location of the ampl model (local file)</p>
+                <p>Model File:</p>
+                <input type="file" name="modelfile" accept=".nl,.mod">
+              </div>
+              <div class="col-md-8">
+                <p>You can also paste your code for the ampl model here</p>
+                <textarea class="form-control" rows="6" name="modelcode"></textarea>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4">
+                <p>Enter the location of the ampl data (local file)</p>
+                <p>Data File:</p>
+                <input type="file" name="datafile">
+              </div>
+              <div class="col-md-8">
+                <p>You can also paste your code for the ampl data here</p>
+                <textarea class="form-control" rows="6"  name="datacode"></textarea>
+              </div>
+            </div>
+
+            <div class="row">
+              <div class="col-md-4">
+                <p>Options:</p>
+                <select multiple class="form-control">
+                  <option value="1">Option1</option>
+                  <option value="2">Option2</option>
+                  <option value="3">Option3</option>
+                  <option value="4">Option4</option>
+                </select>
+              </div>
+              <div class="col-md-8">
+                <p>Comments:</p>
+                <textarea class="form-control" rows="6" name="comments"></textarea>
+              </div>
+            </div>
+            <div class="row">
+              <center>
+                <div class="checkbox">
+                    <input name="sendemail" type="checkbox"> Email me the result
+                    <input name="email" type="hidden" value="{{user.email}}">
+                </div>
+              </center>
+            </div>
+            <br>
+            <div class="row">
+            <center>
+              <button class="btn btn-primary" type="submit">Submit</button>
+              <button class="btn btn-warning">Reset</button>
+            </center>
+            </div>
+            <br>
+
+          </div>
+        </form>
+      </div>
+    {% endblock %}

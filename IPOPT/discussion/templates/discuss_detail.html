@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+{% block title %} IPOPT Homepage - Discussions {% endblock %}
+{% block isDiscussActive %}class="active"{% endblock %}
+
+{% block css %}
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static "css/jquery.tagsinput.css" %}" />
+<link rel="stylesheet" type="text/css" href="{% static "css/jquery-ui.css" %}" />
+{% endblock %}
+
+{% block container %}
+<!-- Main component for a primary marketing message or call to action -->
+{% include 'discuss_header.html' %}
+<div class="row">
+	<div class="col-md-9">
+		<div class="bs-callout">
+				<h4>{{discuss.title}}</h4>
+				<p>{{discuss.text}}</p>
+		</div>
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-9">
+		{% if discuss.code %}
+			<p>The code posted:</p>
+			<p>
+				<pre class="pre-scrollable">
+					{{discuss.code}}
+				</pre>
+				Asked {{discuss.time}} by {{discuss.user}}
+			</p>
+		{% endif %}
+	</div>
+</div>
+<div class="row">
+	<div class="col-md-9">
+		{% for tag in discuss.tags %}
+		<span class="mytag">{{tag.text}}</span>
+		<!-- <button class="btn btn-default btn-xs" style="color:#a5d24a" href="#">{{tag.text}}</button> -->
+		{% endfor %}
+	</div>
+</div>
+
+<div class="row">
+	<div class="col-md-1">
+	<form id="likeform" class="like-form" action="{% url 'discussion.views.like' discuss.get_id %}" method="get">
+		<button  type="submit" class="btn btn-success" id="likebutton"
+			{% if like_disable %}
+			disabled="disabled"
+			{% endif %}
+		>
+			<span class="glyphicon glyphicon-thumbs-up"></span>
+			<span class="badge" id="number_like">{{ like }}</span>
+		</button>
+		{% csrf_token %}
+	</form></div>
+
+	<div class="col-md-1">
+	<form id="dislikeform" class="dislike-form" action="{% url 'discussion.views.dislike' discuss.get_id %}" method="get">
+		<button  type="submit" class="btn btn-danger" id="dislikebutton"
+			{% if dislike_disable %}
+				disabled="disabled"
+			{% endif %}
+		>
+		<span class="glyphicon glyphicon-thumbs-down"></span>
+		<span class="badge" id="number_dislike">{{ dislike }}</span>
+		</button>
+		{% csrf_token %}
+	</form></div>
+</div>
+
+
+<div class="list-group" id="commentlist">
+	{% for comment in comments %}
+		{% include 'comment_row.html' %}
+	{% endfor %}
+</div>
+
+<div class="row">
+	<div class="col-md-12">
+		<div class="row">
+			<div class="col-md-8">
+				<p>Post your comment here</p>
+				<form id="commentform" class="form" action="{% url 'post_comment' discuss.get_id %}" method="POST">
+					{% csrf_token %}
+					<textarea id="comment_textarea" class="form-control" rows="3" name="text"></textarea>
+					<button class="btn btn-default btn-primary">Post</button>
+				</form>
+			</div>
+		</div>
+		<br>
+	</div>
+</div>
+	{% endblock %}
+
+{% block js %}
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#commentform").submit(function(event) {
+		event.preventDefault();
+		$form = $(this);
+		$.ajax({
+			type: "POST",
+			url: $form.attr("action"),
+			data: $form.serialize(),
+			success: function(result)
+			{
+				// console.log(result);
+				$("#commentlist").append(result);
+				$("#comment_textarea").val("");
+			}
+		});
+	});
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#likeform").submit(function(event) {
+		event.preventDefault();
+		$form = $(this);
+		$.ajax({
+			type: "get",
+			url: $form.attr("action"),
+			success: function(result)
+			{
+				console.log(result);
+				console.log(result.like);
+				$("#number_like").text(result.like);
+				// $("#likebutton").Prop("disabled", result.like_disable);
+				// $("#likebutton").disabled = result.like_disable;
+				document.getElementById("likebutton").disabled = result.like_disable;
+			}
+		});
+	});
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){
+	$("#dislikeform").submit(function(event) {
+		event.preventDefault();
+		$form = $(this);
+		$.ajax({
+			type: "get",
+			url: $form.attr("action"),
+			success: function(result)
+			{
+				console.log(result);
+				$("#number_dislike").text(result.dislike);
+				// $("#dislikebutton").disabled = result.dislike_disable;
+				document.getElementById("dislikebutton").disabled = result.dislike_disable;
+				// $("#dislikebutton").Prop("disabled", result.dislike_disable);
+			}
+		});
+	});
+});
+</script>
+
+{% endblock %}

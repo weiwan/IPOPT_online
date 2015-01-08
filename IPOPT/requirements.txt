@@ -1,0 +1,6 @@
+Django
+python-memcached
+djangotoolbox
+mongoengine
+django-mongonaut
+django-gravatar2

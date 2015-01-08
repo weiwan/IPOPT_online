@@ -1,0 +1,38 @@
+{% extends 'base.html' %}
+    {% block title %}IPOPT: View Profile{% endblock %}
+
+	<!--Body Starts Here-->
+	{% block container %}
+		<div class="panel panel-default">
+			<div class="panel-heading">
+        <h3>{{ profile.user.username }} {% if edit_flag %} <a href="{% url 'edit_profile' %}">Edit</a> {% endif %}</h3>
+      </div>
+			<div class="panel-body">
+				<div class="col-md-6">
+						<div class="row">
+                <!-- <img src="https://www.gravatar.com/avatar/ae3247b759fd226a752e5d74eb9892a8?s=500" class="img"> -->
+                <!-- <img alt='IPOPT Image Watermark' src="{{profile.picture}}" class="img-thumbnail" ></img> -->
+							<div class="col-md-9">
+								<h3>{{ profile.about }}</h3>
+								<hr></hr>
+                <h3><b>First Name: </b>{{ profile.first_name }}</h3>
+                <h3><b>Last Name: </b>{{ profile.last_name }}</h3>
+								<h3><b>Age: </b>{{ profile.age }}</h3>
+								<h3><b>Sex: </b>{{ profile.gender }}</h3>
+								<h3><b>Location: </b>{{ profile.location }}</h3>
+								<h3><b>Occupation: </b>{{ profile.occupation }}</h3>
+								<h3><b>Works At: </b>{{ profile.company }}</h3>
+							</div>
+						</div>
+				</div>
+			</div>
+		</div>
+    {% endblock %}
+    <!-- Le javascript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="../assets/js/jquery.js"></script>
+    <script src="../assets/js/bootstrap.min.js"></script>
+
+  </body>
+</html>

@@ -1,0 +1,56 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+		{% block title %} Discussions - IPOPT {% endblock %}
+		{% block isDiscussActive %}class="active"{% endblock %}
+
+		{% block css %}
+		{% load staticfiles %}
+		<link rel="stylesheet" type="text/css" href="{% static "css/jquery.tagsinput.css" %}" />
+		<link rel="stylesheet" type="text/css" href="{% static "css/jquery-ui.css" %}" />
+		{% endblock %}
+
+		{% block container %}
+			{% include 'discuss_header.html' %}
+			<div class="row">
+				<div class="col-md-8">
+					<h3>Recent Discussion</h3>
+					<div class="list-group">
+						{% for topic in topics %}
+						<div class="col-md-12">
+							<div class="list-group-item">
+								<div class="row">
+									<span class="mybtn mybtn-danger mybtn-sm pull-right" id="dislikebutton" style="cursor:auto;">
+										<span class="glyphicon glyphicon-thumbs-down" style="cursor:auto;"></span>
+										<span class="badge" id="number_like" style="background-color:#FFF;color:#d9534f;cursor:auto;">{{ topic.dislike }}</span>
+									</span>
+									<span class="mybtn mybtn-success mybtn-sm pull-right" style="cursor:auto;" id="likebutton">
+										<span class="glyphicon glyphicon-thumbs-up" style="cursor:auto;"></span>
+										<span class="badge" style="background-color:#FFF;color:#93c54b" id="number_like" style="cursor:auto;">{{ topic.like }}</span>
+									</span>
+									<h4 class="list-group-item-heading">
+										<a href="{{ topic.get_absolute_url }}">{{topic.title}}</a>
+									</h4>
+									<p class="list-group-item-text" align="right"><a href="{{ topic.get_user_id }}">{{topic.user.username}}</a>, {{topic.time|naturaltime}}</p>
+								</div>
+							</div>
+						</div>
+						{% endfor %}
+					</div>
+				</div>
+				<div class="col-md-offset-1 col-md-2">
+					<h3>Popular Tags</h3>
+					{% for topic in topics %}
+						{% for tag in topic.tags %}
+							<!-- <p><button class="btn btn-default btn-warning col-md-12" style="margin-top:10px;" href="#">{{tag.text}}</button></p> -->
+							<div class="row"><span class="mytag" style="cursor:auto;">
+								<a href="{% url 'findDiscuss' tag.text %}">{{tag.text}}</a>
+							</span></div>
+						{% endfor %}
+					{% endfor %}
+				</div>
+			</div>
+
+
+
+		{% endblock %}

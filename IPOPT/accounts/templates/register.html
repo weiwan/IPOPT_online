@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}
+Register - IPOPT
+{% endblock %}
+
+{% block css %}
+{% load staticfiles %}
+<link rel="stylesheet" type="text/css" href="{% static "css/signin.css" %}">
+{% endblock %}
+
+{% block container %}
+	<!-- Fixed navbar -->
+	<div class="navbar navbar-default navbar-fixed-top" role="navigation">
+		<div class="container">
+			<div class="navbar-header" style="margin-left:43%;">
+				<a class="navbar-brand" href="{% url 'home'%}">CMU IPOPT Online System</a>
+			</div>
+		</div>
+	</div>
+		{% for field in form.visible_fields %}
+		{% for error in field.errors %}
+		<p class='text-danger text-center'>{{ error }}</p>
+		{% endfor %}
+		{% endfor %}
+		<form class="form-signin" role="form" method="post" action="{% url 'accounts.views.register' %}">
+			{% csrf_token %}
+			<h2 class="form-signin-heading">Register here!</h2>
+			<div class="form-group {% if form.username.errors %}has-error{% endif %}">
+					<input type="text" class="form-control" id="inputUsername" name="username" placeholder="Username">
+			</div>
+			<div class="form-group {% if form.username.errors %}has-error{% endif %}">
+					<input type="text" class="form-control" id="inputEmail" name="email" placeholder="Email">
+			</div>
+			<div class="form-group {% if form.password.errors %}has-error{% endif %}">
+					<input type="password" class="form-control" id="inputPassword1" name="password1" placeholder="Password">
+			</div>
+			<div class="form-group {% if form.password.errors %}has-error{% endif %}">
+					<input type="password" class="form-control" id="inputPassword2" name="password2" placeholder="Please confirm password">
+			</div>
+			<div class="form-group">
+				<button type="submit" class="btn btn-primary btn-block" style="font-size:16px;">Register</button>
+				<input type="hidden" name="next" value="{{ next }}" />
+			</div>
+		</form>
+{% endblock %}

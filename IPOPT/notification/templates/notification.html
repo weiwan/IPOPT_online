@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+{% load humanize %}
+
+		{% block title %} Notification - IPOPT {% endblock %}
+
+		{% block css %}
+			{% load staticfiles %}
+			<link rel="stylesheet" type="text/css" href="/static/css/jquery.tagsinput.css" />
+			<link rel="stylesheet" type="text/css" href="/static/css/jquery-ui.css" />
+		{% endblock %}
+		{% block container %}
+			<div class="row">
+				<div class="col-md-9">
+					<h3>Your Notifications
+						<!-- <button class="btn btn-info btn-sm pull-right" type="submit" href="{% url 'markallread' %}">Mark All as Read</button> -->
+						<span class="mytag pull-right"><a href="{% url 'markallread' %}">Mark All as Read</a></span>
+					</h3>
+
+					<div class="list-group">
+						{% for notification in notifications %}
+						<div class="list-group-item">
+							<div class="row">
+								<h4 class="list-group-item-heading">
+									<a
+									{% if notification.read %}
+									style="color:black"
+									{% else %}
+									style="color:red"
+									{% endif %}
+									href="{% url 'get_notification_url' notification.id %}">{{notification.title}}</a>
+								</h4>
+								<p class="list-group-item-text" align="right">{{notification.time|naturaltime}}</p>
+							</div>
+						</div>
+						{% endfor %}
+					</div>
+				</div>
+				<div class="col-md-3">
+				</div>
+			</div>
+		{% endblock %}
+
+	{% block js %}
+	{% endblock %}

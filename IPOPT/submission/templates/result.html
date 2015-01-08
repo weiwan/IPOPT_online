@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %} Results - IPOPT {% endblock %}
+{% block isResultActive %}class="active"{% endblock %}
+
+{% block container %}
+
+<div>
+	<!-- Main component for a primary marketing message or call to action -->
+	<table class="table table-striped table-hover">
+		<thead>
+			<tr>
+				<th>Title</th>
+				<th>Submission Time</th>
+				<th>Comments</th>
+				<th>Submission File</th>
+				<th>Result File</th>
+			</tr>
+		</thead>
+		<tbody>
+			{% for submission in submissions %}
+			<tr>
+				<td>{{submission.title}}</td>
+				<td>{{submission.time}}</td>
+				<td>{{submission.comments}}</td>
+				<td><a href="{{ submission.get_absolute_url }}">View</td>
+				<td>
+					{% if submission.result %}
+					<a href="{{ submission.get_absolute_url_result }}">{{submission.status}}</a>
+					{% else %}
+						{% ifequal submission.status "Running" %}
+						<p>{{submission.status}} for {{submission.start_time|timesince}}</p>
+						{% else %}
+						<p>{{submission.status}}</p>
+						{% endifequal %}
+					{% endif %}
+				</td>
+			</tr>
+	{% endfor %}
+		</tbody>
+	</table>
+</div>
+
+{% endblock %}

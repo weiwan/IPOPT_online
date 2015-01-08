@@ -1,0 +1,53 @@
+body {
+  padding-top: 70px;
+}
+
+p {
+	text-align: justify;
+}
+
+
+.mybtn {
+border: none;
+font-size: 11px;
+line-height: 22px;
+font-weight: 500;
+text-transform: uppercase;
+}
+.mybtn-sm, .btn-group-sm > .btn {
+padding: 5px 10px;
+font-size: 12px;
+line-height: 1.5;
+border-radius: 3px;
+}
+.mybtn-danger {
+color: #ffffff;
+background-color: #d9534f;
+border-color: transparent;
+}
+
+.mybtn {
+display: inline-block;
+margin-bottom: 0;
+font-weight: normal;
+text-align: center;
+vertical-align: middle;
+cursor: pointer;
+background-image: none;
+border: 1px solid transparent;
+white-space: nowrap;
+font-size: 14px;
+line-height: 1.42857143;
+border-radius: 4px;
+}
+* {
+-webkit-box-sizing: border-box;
+-moz-box-sizing: border-box;
+box-sizing: border-box;
+}
+
+.mybtn-success {
+color: #ffffff;
+background-color: #93c54b;
+border-color: transparent;
+}

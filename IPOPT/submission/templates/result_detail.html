@@ -1,0 +1,64 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+{% block title %} Result - IPOPT {% endblock %}
+{% block isResultActive %}class="active"{% endblock %}
+
+{% block css %}
+<link href="{% static "css/sweet-alert.css" %}" rel="stylesheet">
+{% endblock %}
+{% block container %}
+
+<div class="col-md-9">
+	<pre class="pre">{% if result %}{{result.std}}{{result.err}}{% endif %}</pre>
+</div>
+<div class="col-md-3">
+	<div id="sidebar" class="row" style="position:absolute;">
+		<h3>Objective:</h3>
+		<p>{{ result.objective }}</p>
+		<h3>EXIT tag:</h3>
+		<p>{{result.exit_tag}}</p>
+		<hr>
+		<form id="emailform" class="form-inline" role="form" action="{% url 'sendresult' resultID=result.get_id %}" method="POST">
+			{% csrf_token %}
+			<div class="form-group">
+				<label for="exampleInputEmail1">Send result to email</label>
+				<input name="email" type="email" class="form-control" id="exampleInputEmail1" placeholder="Enter email">
+				<button type="submit" class="btn btn-default btn-primary pull-right">Send</button>
+			</div>
+		</form>	
+		<a href="{% url 'create_discuss' result.get_id %}">Ask a question about this result</a>
+	</div>
+</div>
+
+{% endblock %}
+
+
+{% block js %}
+<script type="text/javascript" src="{% static "js/sweet-alert.min.js" %}"></script>
+<script type="text/javascript">
+$(document).ready(function (){
+	$(window).scroll(function() {
+		$('#sidebar').css('top', $(this).scrollTop() + "px");
+	});
+	$("#emailform").submit(function( event ){
+		event.preventDefault();
+		$form = $(this);
+		$.ajax({
+			type: "POST",
+			url: $form.attr("action"),
+			data: $form.serialize(),
+			success: function(result)
+			{
+				swal({
+					title: result.status,
+					text: result.message,
+					timer: 2000
+				});
+			}
+		});
+	});
+});
+
+
+</script>
+{% endblock %}

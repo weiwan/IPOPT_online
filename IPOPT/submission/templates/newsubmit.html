@@ -1,0 +1,139 @@
+{% extends 'base.html' %}
+{% load staticfiles %}
+
+{% block title %} Submissions - IPOPT {% endblock %}
+{% block isHomeActive %}class="active"{% endblock %}
+{% block css %}
+<link rel="stylesheet" type="text/css" href="{% static "css/jquery.steps.css" %}">
+{% endblock %}
+{% block container %}
+<!-- Main component for a primary marketing message or call to action -->
+<div class="jumbotron">
+	<h2 style="margin-top:0;">Submission page</h2>
+	<hr>
+	<p style="text-algin:justify;">The user must submit a model in
+<a href="http://www.ampl.com/">
+AMPL</a> format or the compiled nl file to solve a non-linear program (NLP).
+Examples of models in AMPL format can be found in the
+<a href="http://www.netlib.org/ampl/models/">
+netlib collection.</a>
+</p>
+<p style="text-algin:justify;">
+You can write your model in the text area or upload a .mod file.
+If you do both, the server will only take the uploaded file.
+</p>
+<p style="text-algin:justify;">
+For now, the online system is tested, so only 5 options in IPOPT are
+available here.
+We will add more options to the online system soon.
+</p>
+</div>
+
+<div class="row">
+<div class="col-md-12">
+	<form id="submission-form" action="{% url 'submission' %}" method = "POST" enctype="multipart/form-data">
+		{% csrf_token %}
+		<div>
+			<h3>Basic</h3>
+			<section>
+				<div>
+					<label for="title">Submission Title *</label>
+					<input id="title" name="title" type="text" class="required form-control">
+				</div>
+				<div>
+					<p>Comments:</p>
+					<textarea class="form-control" rows="6" id="comments" name="comments"></textarea>
+				</div>
+				<hr>
+				<div>
+					<input name="sendemail" type="checkbox"> Email me the result
+					<input name="email" type="hidden" value="{{user.email}}">
+				</div>
+				<hr>
+				<p>(*) Mandatory</p>
+			</section>
+			<h3>Model</h3>
+			<section>
+				<div class="row">
+					<div class="col-md-4">
+						<p>Enter the location of the ampl model (local file)</p>
+						<p>Model File:</p>
+						<input id="id_modelfile" type="file" name="modelfile" accept=".nl,.mod">
+					</div>
+					<div class="col-md-8">
+						<p>You can also paste your code for the ampl model here</p>
+						<textarea id="id_modelcode" class="form-control" rows="16" name="modelcode"></textarea>
+					</div>
+				</div>
+			</section>
+			<h3>Options</h3>
+			<section>
+				<div class="form-group">
+					<label for="id_linear_solve">Linear Solve:</label>
+					<div>{{form.linear_solve}}</div>
+				</div>
+				<div class="form-group">
+					<label for="id_tol">TOL:</label>
+					<input id="id_tol" class="form-control" name="tol" step="any" type="number" min="0" aria-invalid="false" class="valid" value="0.00000001">
+				</div>
+				<div class="form-group">
+					<label for="id_max_iter">Max Iterations:</label>
+					<input id="id_max_iter" class="form-control" min="1" name="max_iter" type="number" value="3000">
+				</div>
+				<div class="form-group">
+					<label for="id_bound_frac">Desired minimum relative distance from the initial point to bound:</label>
+					<input id="id_bound_frac" class="form-control" name="bound_frac" step="any" min="0" max="0.5" type="number" aria-invalid="false" class="valid" value="0.01">
+				</div><div class="form-group">
+					<label for="id_bound_push">Desired minimum absolute distance from the initial point to bound:</label>
+					<input id="id_bound_push" class="form-control" name="bound_push" step="any" min="0" max="0.5" type="number" aria-invalid="false" class="valid" value="0.01">
+				</div>
+			</section>
+			<h3>Finish</h3>
+			<section>
+				<input id="acceptTerms" name="acceptTerms" type="checkbox" class="required"> <label for="acceptTerms">I agree with the Terms and Conditions.</label>
+			</section>
+		</div>
+	</form>
+	</div>
+</div>
+{% endblock %}
+
+
+{% block js %}
+<script type="text/javascript" src="{% static "js/jquery.steps.min.js" %}"></script>
+<script type="text/javascript" src="http://ajax.aspnetcdn.com/ajax/jquery.validate/1.13.1/jquery.validate.min.js"></script>
+<script type="text/javascript">
+	$(document).ready(function(){
+		var form = $("#submission-form");
+		form.validate({
+			errorPlacement: function errorPlacement(error, element) { element.before(error); },
+				rules: {
+					modelfile: {
+						required: function(element) {
+							return (!$("#id_modelcode").val());
+						}
+					}
+				}
+		});
+		form.children("div").steps({
+			headerTag: "h3",
+			bodyTag: "section",
+			transitionEffect: "slideLeft",
+			onStepChanging: function (event, currentIndex, newIndex)
+			{
+				form.validate().settings.ignore = ":disabled,:hidden";
+				return form.valid();
+			},
+			onFinishing: function (event, currentIndex)
+			{
+				form.validate().settings.ignore = ":disabled";
+				return form.valid();
+			},
+			onFinished: function (event, currentIndex)
+			{
+				form.submit();
+			}
+		});
+	});
+</script>
+{% endblock %}
