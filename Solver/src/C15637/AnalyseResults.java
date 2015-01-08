@@ -1,0 +1,87 @@
+package C15637;
+
+import java.io.BufferedReader;
+import java.io.FileReader;
+import java.io.IOException;
+
+public class AnalyseResults {
+	public String[] stdRes;
+	private String exitTag;
+	private int n, meq, mineq, iters;
+	private double objective;
+
+	public AnalyseResults(String str) {
+		stdRes = str.split(":|\\n");
+		for (int i = 0; i < stdRes.length; i++) {
+			if (stdRes[i].contains("Total number of variables")) {
+				n = Integer.parseInt(stdRes[i + 1].replaceAll("\\s+", ""));
+			}
+			if (stdRes[i].contains("Total number of equality constraints")) {
+				meq = Integer.parseInt(stdRes[i + 1].replaceAll("\\s+", ""));
+			}
+			if (stdRes[i].contains("Total number of inequality constraints")) {
+				mineq = Integer.parseInt(stdRes[i + 1].replaceAll("\\s+", ""));
+			}
+			if (stdRes[i].contains("Number of Iterations")) {
+				iters = Integer.parseInt(stdRes[i + 1].replaceAll("\\s+", ""));
+			}
+			if (stdRes[i].contains("Objective")) {
+				objective = Double.parseDouble(stdRes[i + 1].split("\\s+")[2]);
+			}
+			if (stdRes[i].contains("EXIT")) {
+				exitTag = stdRes[i + 1].replaceAll("\\s+", "");
+				exitTag = exitTag.substring(0, exitTag.length() - 1);
+			}
+
+		}
+	}
+
+	public String getExitTag() {
+		return exitTag;
+	}
+
+	public int getN() {
+		return n;
+	}
+
+	public int getM() {
+		return meq + mineq;
+	}
+
+	public int getMeq() {
+		return meq;
+	}
+
+	public int getMineq() {
+		return mineq;
+	}
+
+	public double getObjective() {
+		return objective;
+	}
+
+	public int getIters() {
+		return iters;
+	}
+
+	public static final void main(String args[]) throws IOException {
+		BufferedReader reader = new BufferedReader(new FileReader("out.txt"));
+		String line = null;
+		StringBuilder stringBuilder = new StringBuilder();
+		String ls = System.getProperty("line.separator");
+
+		while ((line = reader.readLine()) != null) {
+			stringBuilder.append(line);
+			stringBuilder.append(ls);
+		}
+
+		String std = stringBuilder.toString();
+		AnalyseResults tmp = new AnalyseResults(std);
+		System.out.println("m: " + tmp.getM());
+		System.out.println("n: " + tmp.getN());
+		System.out.println("objective: " + tmp.getObjective());
+		System.out.println("iter: " + tmp.getIters());
+		System.out.println("exitTage: " + tmp.getExitTag());
+
+	}
+}

@@ -1,0 +1,22 @@
+John Eason:
+// 1. There is a typo in the registeration confirmation email. The word "register" should be "registered".
+// 2. When switching to the analysis tab, account sometimes switches to weiwan. On the other tabs, I am still logged in as jeason. Can't detect any pattern in when I get weiwan or jeason for the analysis tab. 
+
+// 3. Under discussion, it appears that I have the option to like/dislike but clicking doesn't do anything. I can like/dislike once I've visited the thread. 
+
+// 4. Tags don't work. Clicking on a tag does not filter the threads. 
+5. Also it is a relatively minor issue, but it would be best if it didn't make a chart the attached one. (261.99999 label for an integer value)
+
+Bethany Nicholson
+1.Change the corresponding submission page sentence to "This is a test version of the online system so only 5 IPOPT options are currently available. We will add more options to the online system soon."
+2.The increments when you click the up/down arrows for the tolerance are really high. Not sure what would be a good value but increasing by 1 rather than 1E-8 or 1E-7 seems weird.
+3.The arrows don't work for the last two options. When I click them the values don't change at all
+// 4.when you post a comment, it doesn't clear the text box.I mean after you click the post button it doesn't clear the text box
+
+Christian Hoffmann
+1. If you want to open/load a model from your computer, you cannot just show the files with the correct extensions like .mod IF YOU HAVE A GERMAN LANGUAGE PC :-)
+
+
+
+
+
