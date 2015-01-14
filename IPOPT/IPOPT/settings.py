@@ -12,6 +12,8 @@ https://docs.djangoproject.com/en/1.7/ref/settings/
 import os
 from mongoengine import connect
 from os.path import join, dirname
+import redis
+
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
@@ -114,7 +116,8 @@ STATICFILES_DIRS = (
 )
 
 # MONGODB_HOST = "ec2-174-129-116-133.compute-1.amazonaws.com"
-MONGODB_HOST = '107.21.222.181'
+# MONGODB_HOST = '107.21.222.181'
+MONGODB_HOST = '127.0.0.1'
 MONGODB_USER = 'django'
 MONGODB_PWD = 'mongodb15637finalproject'
 # MONGODB_HOST = "ec2-54-147-197-250.compute-1.amazonaws.com"
@@ -123,7 +126,9 @@ MONGODB_PWD = 'mongodb15637finalproject'
 # MONGODB_HOST = "107.21.222.181"
 IPOPT_HOST = "54.174.175.187"
 IPOPT_PORT = 8080
-connect('IPOPT', host=MONGODB_HOST, port=27017, username=MONGODB_USER, password=MONGODB_PWD)
+# connect('IPOPT', host=MONGODB_HOST, port=27017, username=MONGODB_USER, password=MONGODB_PWD)
+connect('IPOPT', host=MONGODB_HOST, port=27017)
+pool = redis.ConnectionPool(host='localhost', port=6379, db=0)
 
 
 EMAIL_USE_TLS = True
@@ -137,4 +142,4 @@ LOGIN_URL = '/accounts/login/'
 LOGIN_REDIRECT_URL = '/submit'
 REGISTER_REDIRECT_URL = '/accounts/activate/'
 
-ALLOWED_HOSTS = ['192.168.10.10',]
+# ALLOWED_HOSTS = ['192.168.10.10',]
