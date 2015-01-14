@@ -69,8 +69,7 @@ def newsubmit(request):
 			# url = "http://"+settings.IPOPT_HOST+":"+str(settings.IPOPT_PORT)+"/WebApp/q2?id="+str(submission.id)
 			# urllib2.urlopen(url)
 			r = redis.Redis(connection_pool = pool)
-			channel = 'IPOPT'+str(randint(1,2))
-			r.publish(channel, str(submission.id))
+			r.rpush("IPOPT", str(submission.id))
 
 			return redirect('result')
 		else:
