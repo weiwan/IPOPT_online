@@ -21,6 +21,8 @@ from django.core.mail import send_mail
 import json
 from IPOPT.settings import pool
 import redis
+from random import randint
+
 
 def home(request):
 	if request.user.is_authenticated():
@@ -67,8 +69,9 @@ def newsubmit(request):
 			# url = "http://"+settings.IPOPT_HOST+":"+str(settings.IPOPT_PORT)+"/WebApp/q2?id="+str(submission.id)
 			# urllib2.urlopen(url)
 			r = redis.Redis(connection_pool = pool)
-			r.publish('IPOPT', str(submission.id))
-			
+			channel = 'IPOPT'+str(randint(1,2))
+			r.publish(channel, str(submission.id))
+
 			return redirect('result')
 		else:
 			raise Http404
