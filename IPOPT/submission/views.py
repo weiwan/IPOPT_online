@@ -58,7 +58,6 @@ def newsubmit(request):
 		return render(request, 'newsubmit.html', context)
 	else:
 		form = SubmitForm(request.POST)
-		print form
 		if form.is_valid():
 			if request.FILES.has_key('modelfile'):
 				submission = form.save(request.FILES['modelfile'])
