@@ -33,7 +33,7 @@ def send_registration_confirmation(request, user):
 		raise Http404
 	title = "IPOPT account confirmation"
 
-	confirmation_url = request.get_host() + "/accounts/confirm/" + str(p.code) + "/" + user.username + '/'
+	confirmation_url = "http://"+request.get_host() + "/accounts/confirm/" + str(p.code) + "/" + user.username + '/'
 	context = {}
 	context['username'] = user.username
 	context['confirmation_url'] = confirmation_url
